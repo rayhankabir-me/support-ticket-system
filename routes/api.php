@@ -7,7 +7,7 @@ require __DIR__ . "/../helpers/JsonResponse.php";
 require __DIR__ . "/../controllers/UserController.php";
 require __DIR__ . "/../controllers/AuthController.php";
 require __DIR__ . "/../controllers/DepartmentController.php";
-
+require __DIR__ . "/../controllers/TicketController.php";
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -17,6 +17,7 @@ $url_parts = explode('/', trim($url, '/'));
 
 $modelName = $url_parts[0] ?? null;
 $id = $url_parts[1] ?? null;
+$third_part = $url_parts[2] ?? null;
 
 //users apis
 if ($modelName === 'users') {
@@ -85,5 +86,29 @@ if ($modelName === "departments") {
         parse_str(file_get_contents("php://input"), $input);
         $updateDepartment = new DepartmentController();
         $updateDepartment->updateDepartment($id, $input);
+    }
+}
+
+//ticket apis
+if ($modelName === "tickets") {
+    if ($method === 'POST' && empty($id) && $third_part !== 'notes') {
+        $submitTicket = new TicketController();
+        $submitTicket->submitTicket($_POST);
+    }
+
+    if ($method === 'PUT' && !empty($id) && $third_part === 'assign') {
+        $assignTicket = new TicketController();
+        $assignTicket->assignAgent($id);
+    }
+
+    if ($method === 'PUT' && !empty($id) && $third_part === 'status') {
+        $changeStatus = new TicketController();
+        parse_str(file_get_contents("php://input"), $input);
+        $changeStatus->changeStatus($input['status'], $id);
+    }
+
+    if ($method === 'POST' && !empty($id) && $third_part === 'notes') {
+        $addNote = new TicketController();
+        $addNote->addNote($id, $_POST);
     }
 }

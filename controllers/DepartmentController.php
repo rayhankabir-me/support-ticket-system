@@ -14,7 +14,7 @@ class DepartmentController
     public function createDepartment($data)
     {
         //check if user is admin
-        AuthMiddleware::checkAdmin();
+        AuthMiddleware::isAdmin();
 
         //validation part
         if (empty($data['name'])) {
@@ -64,7 +64,7 @@ class DepartmentController
     public function deleteDepartment($id)
     {
         //check if user is admin
-        AuthMiddleware::checkAdmin();
+        AuthMiddleware::isAdmin();
         try {
             $exists = $this->departmentModel->getById($id);
             if (!$exists) {
@@ -83,7 +83,7 @@ class DepartmentController
     public function updateDepartment($id, $data) {
 
         //check if user is admin
-        AuthMiddleware::checkAdmin();
+        AuthMiddleware::isAdmin();
         try {
             if (empty($id)) {
                 JsonResponse::jsonResponse(['error' => 'No department found!'], 404);

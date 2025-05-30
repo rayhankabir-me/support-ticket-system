@@ -14,7 +14,7 @@ class UserController
     public function createUser($data)
     {
         //check if user is admin
-        AuthMiddleware::checkAdmin();
+        AuthMiddleware::isAdmin();
 
         //validation part
         if (empty($data['name'])) {
@@ -78,7 +78,7 @@ class UserController
     public function updateUser($id, $data) {
 
         //check if user is admin
-        AuthMiddleware::checkAdmin();
+        AuthMiddleware::isAdmin();
         try {
             if (empty($id)) {
                 JsonResponse::jsonResponse(['error' => 'No user found!'], 404);
