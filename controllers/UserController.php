@@ -1,6 +1,5 @@
 <?php
 require __DIR__ . '/../models/User.php';
-require __DIR__ . '/../helpers/JsonResponse.php';
 require_once __DIR__ . '/../middlewares/AuthMiddleware.php';
 
 class UserController

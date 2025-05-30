@@ -8,7 +8,7 @@ class AuthMiddleware
     public static function check()
     {
         $headers = getallheaders();
-        $inputToken = $headers['Authorization'] ?? null;
+        $inputToken = $headers['Authorization'] ?? '';
         $token = trim(str_replace('Bearer', '', $inputToken));
 
         if (!$token) {

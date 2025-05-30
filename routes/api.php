@@ -3,8 +3,10 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
+require __DIR__ . "/../helpers/JsonResponse.php";
 require __DIR__ . "/../controllers/UserController.php";
 require __DIR__ . "/../controllers/AuthController.php";
+require __DIR__ . "/../controllers/DepartmentController.php";
 
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -16,7 +18,7 @@ $url_parts = explode('/', trim($url, '/'));
 $modelName = $url_parts[0] ?? null;
 $id = $url_parts[1] ?? null;
 
-
+//users apis
 if ($modelName === 'users') {
     if ($method === 'POST') {
         $newUser = new UserController();
@@ -39,6 +41,7 @@ if ($modelName === 'users') {
     }
 }
 
+//auth apis
 if ($modelName === "register") {
     if ($method === 'POST') {
         $newUser = new AuthController();
@@ -57,5 +60,30 @@ if ($modelName === "logout") {
         $headers = getallheaders();
         $logoutUser = new AuthController();
         $logoutUser->logout($headers);
+    }
+}
+
+//departments apis
+if ($modelName === "departments") {
+    if ($method === 'GET' && empty($id)) {
+        $allDepartments = new DepartmentController();
+        $allDepartments->getAllDepartments();
+    }
+    if ($method === 'POST') {
+        $newDepartment = new DepartmentController();
+        $newDepartment->createDepartment($_POST);
+    }
+    if ($method === 'GET' && !empty($id)) {
+        $getDepartment = new DepartmentController();
+        $getDepartment->getDepartmentById($id);
+    }
+    if ($method === 'DELETE' && !empty($id)) {
+        $deleteDepartment = new DepartmentController();
+        $deleteDepartment->deleteDepartment($id);
+    }
+    if ($method === 'PUT' && !empty($id)) {
+        parse_str(file_get_contents("php://input"), $input);
+        $updateDepartment = new DepartmentController();
+        $updateDepartment->updateDepartment($id, $input);
     }
 }
