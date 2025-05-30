@@ -91,4 +91,31 @@ class User
             return false;
         }
     }
+
+    public function getByName($name)
+    {
+        try {
+            $stmt = $this->get_connection->prepare("/** @lang text */ SELECT * FROM users WHERE name = :name");
+            $stmt->execute([':name' => $name]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Throwable $err) {
+            http_response_code(500);
+            ThrowException::throwException($err);
+            return false;
+        }
+    }
+
+    public function getByEmail($email)
+    {
+        try {
+            $stmt = $this->get_connection->prepare("/** @lang text */ SELECT * FROM users WHERE email = :email");
+            $stmt->execute([':email' => $email]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Throwable $err) {
+            http_response_code(500);
+            ThrowException::throwException($err);
+            return false;
+        }
+    }
+
 }

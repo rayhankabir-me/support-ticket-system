@@ -4,6 +4,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 require __DIR__ . "/../controllers/UserController.php";
+require __DIR__ . "/../controllers/AuthController.php";
 
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -35,5 +36,26 @@ if ($modelName === 'users') {
     if ($method === 'PUT' && !empty($id)) {
         $updateUser = new UserController();
         $updateUser->updateUser($id, $_POST);
+    }
+}
+
+if ($modelName === "register") {
+    if ($method === 'POST') {
+        $newUser = new AuthController();
+        $newUser->registerUser($_POST);
+    }
+}
+if ($modelName === "login") {
+    if ($method === 'POST') {
+        $loginUser = new AuthController();
+        $loginUser->loginUser($_POST);
+    }
+}
+
+if ($modelName === "logout") {
+    if ($method === 'POST') {
+        $headers = getallheaders();
+        $logoutUser = new AuthController();
+        $logoutUser->logout($headers);
     }
 }
