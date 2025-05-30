@@ -1,3 +1,3 @@
 <?php
 
-echo "Hello World!";
+require __DIR__ . "/routes/api.php";

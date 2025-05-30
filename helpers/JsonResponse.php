@@ -1,7 +1,7 @@
 <?php
-class JsonResource
+class JsonResponse
 {
-    public static function JsonResponse($data, $status = 200)
+    public static function jsonResponse($data, $status = 200)
     {
         http_response_code($status);
         echo json_encode($data);
